@@ -2794,7 +2794,7 @@ public class PhotoModule
             mCameraDevice.setFaceDetectionCallback(null, null);
             mCameraDevice.setErrorCallback(null);
 
-            if (mActivity.isSecureCamera() && !CameraActivity.isFirstStartAfterScreenOn()) {
+            if (mActivity.isSecureCamera()) {
                 // Blocks until camera is actually released.
                 CameraHolder.instance().strongRelease();
             } else {
@@ -2878,9 +2878,6 @@ public class PhotoModule
         }
 
         setCameraParameters(UPDATE_PARAM_ALL);
-
-        mCameraDevice.startPreview();
-        setCameraState(IDLE);
         mCameraDevice.setOneShotPreviewCallback(mHandler,
                 new CameraManager.CameraPreviewDataCallback() {
                     @Override
@@ -2888,6 +2885,9 @@ public class PhotoModule
                         mUI.hidePreviewCover();
                     }
                 });
+        mCameraDevice.startPreview();
+
+        setCameraState(IDLE);
         mHandler.sendEmptyMessage(ON_PREVIEW_STARTED);
 
         setDisplayOrientation();
